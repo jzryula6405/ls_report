@@ -1,109 +1,220 @@
 <!DOCTYPE html>  
-<html lang="zh">  
-<head>  
-    <meta charset="UTF-8">  
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">  
-    <title>个人介绍</title>  
-    <link rel="stylesheet" href="style.css">  
-</head>  
+<html lang="zh-CN">  
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="css/bootstrap.min.css" >
+    <script src="js/jquery.min.js" ></script>
+    <script src="js/bootstrap.bundle.min.js" ></script>
+    <script src="json/list.js" ></script>
+    <title>首页</title>
+</head> 
 <style>
-    body {  
-    font-family: Arial, sans-serif;  
-    margin: 0;  
-    padding: 0;  
-    background-color: #f4f4f4;  
-}  
-  
-header {  
-    background-color: #333;  
-    color: white;  
-    padding: 10px 20px;  
-    text-align: center;  
-}  
-  
-nav ul {  
-    list-style: none;  
-    padding: 0;  
-}  
-  
-nav ul li {  
-    display: inline;  
-    margin-right: 10px;  
-}  
-  
-nav ul li a {  
-    color: white;  
-    text-decoration: none;  
-}  
-  
-section {  
-    padding: 20px;  
-    background-color: white;  
-    margin: 10px;  
-    border-radius: 8px;  
-    box-shadow: 0 0 10px rgba(0,0,0,0.1);  
-}  
-  
-footer {  
-    text-align: center;  
-    padding: 10px 0;  
-    background-color: #333;  
-    color: white;  
-    position: fixed;  
-    width: 100%;  
-    bottom: 0;  
-}  
-  
-a {  
-    color: #007bff;  
-    text-decoration: none;  
-}  
-  
-a:hover {  
-    text-decoration: underline;  
-}
+    .btn-back-to-top {  
+      display: none; /* 默认隐藏按钮 */  
+      position: fixed; /* 固定定位 */  
+      bottom: 20px; /* 距离页面底部20px */  
+      right: 30px; /* 距离页面右侧30px */  
+      z-index: 999; /* 确保按钮在其他内容之上 */  
+      border: none; /* 去除边框 */  
+      outline: none; /* 去除焦点轮廓 */  
+      background-color: #007bff; /* 背景颜色 */  
+      color: white; /* 文字颜色 */  
+      cursor: pointer; /* 鼠标悬停时显示指针 */  
+      padding: 10px 15px; /* 内边距 */  
+      border-radius: 50%; /* 圆形按钮 */  
+      font-size: 18px; /* 字体大小 */  
+      font-weight: bold; /* 字体加粗 */  
+      transition: background-color 0.3s, opacity 0.5s, visibility 0.5s; /* 平滑过渡效果 */  
+    }  
+      
+    .btn-back-to-top:hover {  
+      background-color: #0056b3; /* 鼠标悬停时的背景颜色 */  
+    }  
+      
+    /* 当页面滚动时显示按钮 */  
+    body.show-back-to-top #back-to-top {  
+      display: block;  
+    }
+    .circle-avatar {  
+        display: inline-block; /* 允许设置宽高 */  
+        width: 50px; /* 设置圆的直径 */  
+        height: 50px; /* 设置圆的直径 */  
+        border-radius: 50%; /* 设置为圆形 */  
+        background-color: #0b9fe4; /* 背景色，可以根据需要调整 */  
+        color: #fcfcfc; /* 文字颜色 */  
+        font-size: 24px; /* 文字大小，根据圆的直径调整 */  
+        line-height: 50px; /* 文字垂直居中 */  
+        text-align: center; /* 文字水平居中 */  
+        font-weight: bold; /* 文字加粗，可根据需要设置 */  
+        /* 可以添加其他样式，如阴影等 */  
+  }  
 </style>
 <body>  
-    <header>  
-        <h1>我的个人介绍</h1>  
-        <nav>  
-            <ul>  
-                <li><a href="#about">关于我</a></li>  
-                <li><a href="#skills">技能</a></li>  
-                <li><a href="#projects">项目</a></li>  
-                <li><a href="#contact">联系方式</a></li>  
-            </ul>  
-        </nav>  
-    </header>  
+<div class="container mt-5" style="margin-bottom: 80px;">  
+    <!-- 搜索框 -->  
+    <div class="input-group mb-3">  
+        <span class="input-group-text" id="basic-addon1">搜索名称</span>  
+        <input type="text" class="form-control" placeholder="输入名称" aria-label="Username" aria-describedby="basic-addon1" id="searchInput">  
+    </div>  
   
-    <section id="about">  
-        <h2>关于我</h2>  
-        <p>我是XXX，一名热爱编程的前端开发者。</p>  
-    </section>  
+    <!-- 用户列表 -->  
+    <ul class="list-group" id="userList">  
+        <!-- 假设数据通过JavaScript动态生成 -->  
+    </ul>  
+
+    <!-- 模态框 -->  
+    <div class="modal fade" id="reviewModal" tabindex="-1" aria-labelledby="reviewModalLabel" aria-hidden="true">  
+        <div class="modal-dialog">  
+            <div class="modal-content">  
+                <div class="modal-header">  
+                    <h5 class="modal-title" id="reviewModalLabel">评价详情</h5>  
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>  
+                </div>  
+                <div class="modal-body" id="reviewBody">  
+                    <!-- 评价内容将通过JavaScript动态生成 -->  
+                </div>  
+                <div class="modal-footer">  
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">关闭</button>  
+                </div>  
+            </div>  
+        </div>  
+    </div>
+</div>  
+<a href="#top" id="back-to-top" class="btn-back-to-top">回到顶部</a>
+
   
-    <section id="skills">  
-        <h2>技能</h2>  
-        <ul>  
-            <li>HTML/CSS</li>  
-            <li>JavaScript</li>  
-            <li>React</li>  
-            <li>Vue.js</li>  
-        </ul>  
-    </section>  
+<script>  
+    // 示例数据  
+    const users = list_data;  
+
+
+
+    $(window).scroll(function() {  
+      if ($(this).scrollTop() > 20) {  
+        $('#back-to-top').fadeIn();  
+      } else {  
+        $('#back-to-top').fadeOut();  
+      }  
+    });  
+      
+    $('#back-to-top').click(function(e) {  
+      e.preventDefault();  
+      $('body,html').animate({  
+        scrollTop: 0  
+      }, 800);  
+    });
   
-    <section id="projects">  
-        <h2>项目</h2>  
-        <p>这里将列出我的一些项目。</p>  
-    </section>  
+    // 渲染用户列表  
+    function renderUserList(users) {  
+        const list = document.getElementById('userList');  
+        list.innerHTML = ''; // 清空列表  
   
-    <section id="contact">  
-        <h2>联系方式</h2>  
-        <p>邮箱: example@example.com</p>  
-        <p>GitHub: <a href="https://github.com/yourusername">yourusername</a></p>  
-    </section>  
+        users.forEach(user => {  
+            const item = document.createElement('li');  
+            item.className = 'list-group-item d-flex justify-content-between align-items-center';  
   
-    <footer>  
-        <p>&copy; 2023 XXX. All rights reserved.</p>  
-    </footer>  
+            // 头像和名称  
+            const avatar = document.createElement('img');  
+            avatar.src = user.avatar;  
+            avatar.alt = user.name;  
+            avatar.style.width = '50px';  
+            avatar.style.height = '50px';  
+            avatar.style.borderRadius = '50%'; 
+            avatar.style.marginRight = '10px'; 
+  
+            const nameSpan = document.createElement('span');  
+            nameSpan.textContent = user.name;  
+  
+            // 号码  
+            const numberSpan = document.createElement('span');  
+            numberSpan.textContent = user.number;  
+  
+            // 评价按钮  
+            const actionButton = document.createElement('button');  
+            actionButton.className = 'btn btn-primary btn-sm';  
+            actionButton.textContent = '评价';  
+            actionButton.onclick = function() {  
+                showReviews(user.id);  
+            };
+  
+            // 组装元素  
+            const contentDiv = document.createElement('div');  
+            contentDiv.appendChild(avatar);  
+            contentDiv.appendChild(nameSpan);  
+            contentDiv.appendChild(document.createTextNode(' ')); // 添加空格  
+            contentDiv.appendChild(numberSpan);  
+  
+            item.appendChild(contentDiv);  
+            item.appendChild(actionButton);  
+  
+            list.appendChild(item);  
+        });  
+    }  
+
+    // 显示评价  
+    function showReviews(id) {  
+        let script = document.createElement("script");
+        script.src = "json/"+id+".js"
+        document.body.appendChild(script)
+        script.onload = function() {
+            // console.log(ls_review_data)
+            const modalBody = document.getElementById('reviewBody');  
+            modalBody.innerHTML = ''; // 清空之前的评价  
+    
+            const ul = document.createElement('ul');  
+            ul.className = 'list-group';  
+    
+            ls_review_data.forEach(review => {  
+                const li = document.createElement('li');  
+                li.className = 'list-group-item d-flex align-items-start';  
+                let firstChar = review.username.charAt(0); 
+                li.innerHTML  = `
+                    <div class="circle-avatar">${firstChar}</div>  
+                    <div class="d-flex flex-column flex-grow-1" style="padding-left: 10px;">  
+                        <p class="mb-1">${review.content}</p>  
+                        <p class="text-muted mb-1"><span class="badge badge-pill badge-primary">${review.source}</span> <small class="text-muted">评论时间: ${review.time}</small>  </p>  
+                    </div>  
+                `;
+                ul.appendChild(li);  
+            });  
+    
+            modalBody.appendChild(ul);  
+    
+            // 显示模态框  
+            const modal = new bootstrap.Modal(document.getElementById('reviewModal'), {  
+                keyboard: true  
+            });  
+            modal.show();  
+            document.querySelector('.btn-close').addEventListener('click', function () {  
+                modal.hide();  
+            });  
+            document.querySelector('.modal-footer .btn-secondary').addEventListener('click', function () {  
+                modal.hide();  
+            }); 
+        }
+        
+    } 
+      
+    
+  
+    // 初始渲染  
+    renderUserList(users);  
+  
+    // 搜索功能  
+    document.getElementById('searchInput').addEventListener('input', function() {  
+        const searchText = this.value.toLowerCase();  
+        const filteredUsers = users.filter(user => 
+            {
+                if (user.number && user.number.toLowerCase().includes(searchText)) {  
+                    return true;  
+                }  
+                // 如果 number 不满足条件，检查 name  
+                return user.name.toLowerCase().includes(searchText);
+            })
+        renderUserList(filteredUsers);  
+    });  
+</script>  
+  
 </body>  
 </html>
